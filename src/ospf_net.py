@@ -29,23 +29,23 @@ class Net:
            print('There are no places for new routers, max count:', self.MAX_ROUTERS_COUNT)
            return
 
-    self._curr_id = free_id
-    self.id_free_list[self._curr_id] = False
+        self._curr_id = free_id
+        self.id_free_list[self._curr_id] = False
 
     # Adjust positions based on a more complex network shape
     # For simplicity, this is just an example; adapt based on your specific requirements
-    x_position = x * 3
-    y_position = y * 3
+        x_position = x * 3
+        y_position = y * 3
 
     # add edge
-    for router_id, router in self.routers.items():
-        if router.meta.range(x_position, y_position) <= self.ROUTERS_RANGE:
-            self.edge_list.append([router_id, self._curr_id])
+        for router_id, router in self.routers.items():
+           if router.meta.range(x_position, y_position) <= self.ROUTERS_RANGE:
+              self.edge_list.append([router_id, self._curr_id])
 
-    new_router = Router(x_position, y_position, self.ROUTERS_RANGE, self._curr_id, self.queue_list, self.routerStates)
-    self.routers[self._curr_id] = new_router
+        new_router = Router(x_position, y_position, self.ROUTERS_RANGE, self._curr_id, self.queue_list, self.routerStates)
+        self.routers[self._curr_id] = new_router
 
-    self._server.turn_on_router(new_router)
+        self._server.turn_on_router(new_router)
 
 
     def ping_routers(self,  id_start_node: int, id_finish_node: int):
