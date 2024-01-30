@@ -29,25 +29,29 @@ def display(display_queue: mp.Queue):
                 return
 
         try:
-            [rml, edge_list]  = display_queue.get(timeout=0.9)  # rml means routers_meta_list
-            #draw lines
-            for edges in edge_list:
-                pygame.draw.line(sc, BLACK, (ws * rml[edges[0]].x, ws * rml[edges[0]].y),
-                                 (ws * rml[edges[1]].x, ws * rml[edges[1]].y)
-                )
-            #draw circles
-            for meta in rml:
+            [routers_meta_list, edge_list] = display_queue.get(timeout=0.9)
+
+            # Draw lines (edges) with weights
+            for edges, weight in edge_list:
+                pygame.draw.line(sc, BLACK, (ws * routers_meta_list[edges[0]].x, ws * routers_meta_list[edges[0]].y),
+                                 (ws * routers_meta_list[edges[1]].x, ws * routers_meta_list[edges[1]].y))
+
+                # Display weight as label
+                font = pygame.font.Font(None, 20)
+                text = font.render(str(weight), 1, BLACK)
+                text_pos = ((routers_meta_list[edges[0]].x + routers_meta_list[edges[1]].x) // 2,
+                            (routers_meta_list[edges[0]].y + routers_meta_list[edges[1]].y) // 2)
+                sc.blit(text, text_pos)
+
+            # Draw circles (nodes) with updated colors
+            for meta in routers_meta_list:
                 router_color = ORANGE
                 if meta.state == RouterStateType.FinishNode:
                     router_color = GREEN
                 elif meta.state == RouterStateType.Transits:
                     router_color = BLUE
 
-                pygame.draw.circle(sc, router_color, (
-                    int(meta.x * ws),
-                    int(meta.y * ws)),
-                    radius_size
-                )
+                pygame.draw.circle(sc, router_color, (int(meta.x * ws), int(meta.y * ws)), radius_size)
                 text = font.render(str(meta.id), 1, (10, 0, 0))
                 sc.blit(text, (int(meta.x * ws - radius_size // 3), int(meta.y * ws - radius_size // 3)))
         except Empty:
