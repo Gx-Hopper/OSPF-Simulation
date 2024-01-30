@@ -24,10 +24,10 @@ class Net:
 
 
     def add_router(self, x, y):
-    free_id = self._find_free_id()
-    if free_id == -1:
-        print('There are no places for new routers, max count:', self.MAX_ROUTERS_COUNT)
-        return
+        free_id = self._find_free_id()
+        if free_id == -1:
+           print('There are no places for new routers, max count:', self.MAX_ROUTERS_COUNT)
+           return
 
     self._curr_id = free_id
     self.id_free_list[self._curr_id] = False
