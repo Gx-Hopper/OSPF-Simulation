@@ -22,7 +22,7 @@ def display(display_queue: mp.Queue):
     radius_size = 30
     font = pygame.font.Font(None, 45)
     display_queue.put('init')
-
+    
     while True:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
